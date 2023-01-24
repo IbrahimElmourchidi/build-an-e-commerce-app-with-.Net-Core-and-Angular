@@ -7,38 +7,38 @@ using Core.Interfaces;
 using Core.Specifications;
 using Microsoft.EntityFrameworkCore;
 
-namespace Infrastructure.Data
+namespace Infrastructure.Data;
+
+public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : BaseEntity
 {
-    public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
+    private readonly StoreContext _context;
+    public GenericRepository(StoreContext context)
     {
-        private readonly StoreContext _context;
-        public GenericRepository(StoreContext context)
-        {
-            this._context = context;
-        }
-        public async Task<IReadOnlyList<T>> GetAllAsycn()
-        {
-            return await this._context.Set<T>().ToListAsync();
-        }
+        _context = context;
+    }
 
-        public async Task<T> GetByIdAsync(int id)
-        {
-            return await this._context.Set<T>().FindAsync(id);
-        }
+    public async Task<TEntity?> GetSingle(int id)
+    {
+        return await _context.Set<TEntity>().FindAsync(id);
+    }
 
-        public async Task<T> GetEntityWithSpec(ISpecification<T> spec)
-        {
-            return await ApplySpecification(spec).FirstOrDefaultAsync();
-        }
+    public async Task<TEntity?> GetSingleWithSpec(ISpecification<TEntity> spec)
+    {
+        return await ApplySpecification(spec).FirstOrDefaultAsync();
+    }
 
-        public async Task<IReadOnlyList<T>> ListAsync(ISpecification<T> spec)
-        {
-            return await ApplySpecification(spec).ToListAsync();
-        }
+    public async Task<IReadOnlyList<TEntity>> ListAllAsync()
+    {
+        return await _context.Set<TEntity>().ToListAsync();
+    }
 
-        private IQueryable<T> ApplySpecification(ISpecification<T> spec)
-        {
-            return SpecificationEvaluator<T>.GetQuery(_context.Set<T>(), spec);
-        }
+    public async Task<IReadOnlyList<TEntity>> ListAllAsyncWithSpec(ISpecification<TEntity> spec)
+    {
+        return await ApplySpecification(spec).ToListAsync();
+    }
+
+    private IQueryable<TEntity> ApplySpecification(ISpecification<TEntity> spec)
+    {
+        return SpecificationEvaluator<TEntity>.GetQuery(_context.Set<TEntity>(), spec);
     }
 }

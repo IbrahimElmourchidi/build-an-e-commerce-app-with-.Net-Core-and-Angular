@@ -3,27 +3,28 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Core.Entities;
 
-namespace Core.Specifications
+namespace Core.Specifications;
+
+public class BaseSpecification<TEntity> : ISpecification<TEntity> where TEntity : BaseEntity
 {
-    public class BaseSpecification<T> : ISpecification<T>
+    public BaseSpecification()
     {
-        public BaseSpecification()
-        {
-        }
+    }
 
-        public BaseSpecification(Expression<Func<T, bool>> criteria)
-        {
-            Criteria = criteria;
-        }
+    public BaseSpecification(Expression<Func<TEntity, bool>> criteria)
+    {
+        Criteria = criteria;
 
-        public Expression<Func<T, bool>> Criteria { get; }
+    }
 
-        public List<Expression<Func<T, object>>> Includes { get; } = new List<Expression<Func<T, object>>>();
+    public Expression<Func<TEntity, bool>> Criteria { get; }
 
-        protected void AddInculde(Expression<Func<T, Object>> includeExpression)
-        {
-            Includes.Add(includeExpression);
-        }
+    public List<Expression<Func<TEntity, object>>> Includes { get; } = new List<Expression<Func<TEntity, object>>>();
+
+    protected void AddInclude(Expression<Func<TEntity, object>> include)
+    {
+        Includes.Add(include);
     }
 }
