@@ -15,5 +15,5 @@ public class ApiExceptionResponse : ApiErrorResponse
 
     }
 
-    public string Details { get; set; }
+    public string? Details { get; set; }
 }
