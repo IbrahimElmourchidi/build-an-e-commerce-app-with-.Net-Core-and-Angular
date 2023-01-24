@@ -6,16 +6,15 @@ using API.Dtos;
 using AutoMapper;
 using Core.Entities;
 
-namespace API.Helpers
+namespace API.Helpers;
+
+public class MappingProfiles : Profile
 {
-    public class MappingProfiles : Profile
+    public MappingProfiles()
     {
-        public MappingProfiles()
-        {
-            CreateMap<Product, ProductToReturnDto>()
-            .ForMember(p => p.ProductBrand, o => o.MapFrom(s => s.ProductBrand.Name))
-            .ForMember(p => p.ProductType, o => o.MapFrom(s => s.ProductType.Name))
-            .ForMember(p => p.PictureUrl, o => o.MapFrom<ProudctUrlResolver>());
-        }
+        CreateMap<Product, ProductToReturn>()
+        .ForMember(p => p.ProductBrand, o => o.MapFrom(p => p.ProductBrand.Name))
+        .ForMember(p => p.ProductType, o => o.MapFrom(p => p.ProductType.Name))
+        .ForMember(p => p.PictureUrl, o => o.MapFrom<PictureUrlResolver>());
     }
 }
