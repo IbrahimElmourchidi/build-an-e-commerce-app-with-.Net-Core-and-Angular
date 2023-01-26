@@ -22,13 +22,12 @@ namespace Infrastructure.Data
 
                     var brands = JsonSerializer.Deserialize<List<ProductBrand>>(brandsData);
 
-                    if (brands != null)
+
+                    foreach (var item in brands)
                     {
-                        foreach (var item in brands)
-                        {
-                            context.ProductBrands.Add(item);
-                        }
+                        context.ProductBrands.Add(item);
                     }
+
 
                     await context.SaveChangesAsync();
                 }
@@ -40,13 +39,12 @@ namespace Infrastructure.Data
 
                     var types = JsonSerializer.Deserialize<List<ProductType>>(typesData);
 
-                    if (types != null)
+
+                    foreach (var item in types)
                     {
-                        foreach (var item in types)
-                        {
-                            context.ProductTypes.Add(item);
-                        }
+                        context.ProductTypes.Add(item);
                     }
+
 
                     await context.SaveChangesAsync();
                 }
@@ -58,13 +56,12 @@ namespace Infrastructure.Data
 
                     var products = JsonSerializer.Deserialize<List<Product>>(productsData);
 
-                    if (products != null)
+
+                    foreach (var item in products)
                     {
-                        foreach (var item in products)
-                        {
-                            context.Products.Add(item);
-                        }
+                        context.Products.Add(item);
                     }
+
 
                     await context.SaveChangesAsync();
                 }

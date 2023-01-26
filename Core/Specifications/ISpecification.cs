@@ -9,7 +9,13 @@ namespace Core.Specifications;
 
 public interface ISpecification<TEntity> where TEntity : BaseEntity
 {
-    public Expression<Func<TEntity, bool>> Criteria { get; }
+    Expression<Func<TEntity, bool>> Criteria { get; }
+    List<Expression<Func<TEntity, object>>> Includes { get; }
+    Expression<Func<TEntity, object>> OrderBy { get; }
+    Expression<Func<TEntity, object>> OrderByDecending { get; }
 
-    public List<Expression<Func<TEntity, object>>> Includes { get; }
+    int Take { get; }
+    int Skip { get; }
+
+    bool IsPagingEnabled { get; }
 }
