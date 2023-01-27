@@ -8,6 +8,7 @@ using Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
 using API.Dtos;
+using API.Helpers;
 
 namespace API.Controllers;
 
@@ -28,11 +29,25 @@ public class ProductController : BaseApiController
 
     }
     [HttpGet]
-    public async Task<ActionResult<IReadOnlyList<Product>>> GetAllProducts([FromQuery] ProductSpecParams specParams)
+    public async Task<ActionResult<Pagination<ProductToReturn>>> GetAllProducts([FromQuery] ProductSpecParams specParams)
     {
         var spec = new ProductsWithBrandAndTypeSpec(specParams);
+        var countSpec = new ProductsWithFiltersCountSpec(specParams);
+        var totalItems = await _productRepo.CountAsync(countSpec);
         var products = await _productRepo.ListAllAsyncWithSpec(spec);
-        return Ok(_mapper.Map<IReadOnlyList<Product>, IReadOnlyList<ProductToReturn>>(products));
+        var data = _mapper.Map<IReadOnlyList<Product>, IReadOnlyList<ProductToReturn>>(products);
+        var baseUrl = "https://localhost:5001/api/product?";
+        var pagination = new Pagination<ProductToReturn>()
+        {
+            Data = data,
+            PageIndex = specParams.PageIndex,
+            PageSize = specParams.PageSize,
+            Count = totalItems,
+        };
+        // $"{Request.Scheme}://{Request.Host}:{Request.Host.Port ?? 80}"
+        var link = $"{Request.Scheme}://{Request.Host}/api/product?";
+        pagination.ApplyNavigationLinks(link, specParams);
+        return Ok(pagination);
     }
 
     [HttpGet("brands")]
