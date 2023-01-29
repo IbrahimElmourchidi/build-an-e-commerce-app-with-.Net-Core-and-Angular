@@ -9,19 +9,28 @@ namespace API.Helpers;
 public class Pagination<T> where T : class
 {
 
-    public Pagination()
+    private ProductSpecParams SpecParams { get; }
+
+    public Pagination(ProductSpecParams specParams)
     {
+        SpecParams = specParams;
+        PageSize = specParams.PageSize;
+        PageIndex = specParams.PageIndex;
     }
-    public int PageIndex { get; set; }
-    public int PageSize { get; set; }
+
+    public int PageSize { get; private set; }
+    public int PageIndex { get; private set; }
     public int Count { get; set; }
     public IReadOnlyList<T> Data { get; set; }
-    public string FirstPage { get; set; }
-    public string PreviousLink { get; set; }
-    public string NextLink { get; set; }
-    public string LastPage { get; set; }
-
-    public void ApplyNavigationLinks(string baseUrl, ProductSpecParams specParams)
+    public string? BaseUrl
+    {
+        set => ApplyNavigationLinks(value, SpecParams);
+    }
+    public string? FirstPageLink { get; private set; }
+    public string? PreviousPageLink { get; private set; }
+    public string? NextPageLink { get; private set; }
+    public string? LastPageLink { get; private set; }
+    private void ApplyNavigationLinks(string baseUrl, ProductSpecParams specParams)
     {
 
         var totalPages = Math.Ceiling((double)Count / PageSize);
@@ -39,9 +48,9 @@ public class Pagination<T> where T : class
             baseUrl += $"typeId={specParams.TypeId}&";
         }
 
-        FirstPage = baseUrl + $"pageIndex=1&pageSize={PageSize}";
-        NextLink = (PageIndex == totalPages) ? null : baseUrl + $"pageIndex={PageIndex + 1}&pageSize={PageSize}";
-        PreviousLink = (PageIndex == 1) ? null : baseUrl + $"pageIndex={PageIndex - 1}&pageSize={PageSize}";
-        LastPage = baseUrl + $"pageIndex={totalPages}&pageSize={PageSize}";
+        FirstPageLink = baseUrl + $"pageIndex=1&pageSize={PageSize}";
+        NextPageLink = (PageIndex == totalPages) ? null : baseUrl + $"pageIndex={PageIndex + 1}&pageSize={PageSize}";
+        PreviousPageLink = (PageIndex == 1) ? null : baseUrl + $"pageIndex={PageIndex - 1}&pageSize={PageSize}";
+        LastPageLink = baseUrl + $"pageIndex={totalPages}&pageSize={PageSize}";
     }
 }

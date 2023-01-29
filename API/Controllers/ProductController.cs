@@ -36,17 +36,13 @@ public class ProductController : BaseApiController
         var totalItems = await _productRepo.CountAsync(countSpec);
         var products = await _productRepo.ListAllAsyncWithSpec(spec);
         var data = _mapper.Map<IReadOnlyList<Product>, IReadOnlyList<ProductToReturn>>(products);
-        var baseUrl = "https://localhost:5001/api/product?";
-        var pagination = new Pagination<ProductToReturn>()
+        // $"{Request.Scheme}://{Request.Host}:{Request.Host.Port ?? 80}"
+        var pagination = new Pagination<ProductToReturn>(specParams)
         {
             Data = data,
-            PageIndex = specParams.PageIndex,
-            PageSize = specParams.PageSize,
             Count = totalItems,
+            BaseUrl = $"{Request.Scheme}://{Request.Host}/api/product?"
         };
-        // $"{Request.Scheme}://{Request.Host}:{Request.Host.Port ?? 80}"
-        var link = $"{Request.Scheme}://{Request.Host}/api/product?";
-        pagination.ApplyNavigationLinks(link, specParams);
         return Ok(pagination);
     }
 

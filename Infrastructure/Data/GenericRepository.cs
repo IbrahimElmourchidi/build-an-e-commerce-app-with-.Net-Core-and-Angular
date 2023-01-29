@@ -17,6 +17,11 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEnt
         _context = context;
     }
 
+    public async Task<int> CountAsync(ISpecification<TEntity> spec)
+    {
+        return await ApplySpecification(spec).CountAsync();
+    }
+
     public async Task<TEntity?> GetSingle(int id)
     {
         return await _context.Set<TEntity>().FindAsync(id);
