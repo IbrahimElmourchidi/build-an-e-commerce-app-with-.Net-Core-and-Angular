@@ -6,14 +6,15 @@ using Core.Entities;
 
 namespace Core.Specifications;
 
-public class ProductsWithFiltersCountSpec: BaseSpecification<Product>
+public class ProductsWithFiltersCountSpec : BaseSpecification<Product>
 {
-    public ProductsWithFiltersCountSpec(ProductSpecParams productParams) : base(
+    public ProductsWithFiltersCountSpec(ProductSpecParams specParams) : base(
         x =>
-            (!productParams.BrandId.HasValue ||
-                x.ProductBrandId == productParams.BrandId) &&
-            (!productParams.TypeId.HasValue ||
-                x.ProductTypeId == productParams.TypeId)
+        (string.IsNullOrEmpty(specParams.Search) || x.Name.ToLower().Contains(specParams.Search))
+        &&
+        (!specParams.BrandId.HasValue || x.ProductBrandId == specParams.BrandId)
+        &&
+        (!specParams.TypeId.HasValue || x.ProductTypeId == specParams.TypeId)
     )
     {
     }
