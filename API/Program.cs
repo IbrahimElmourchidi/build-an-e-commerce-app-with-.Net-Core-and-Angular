@@ -16,6 +16,13 @@ builder.Services.AddDbContext<StoreContext>(context => context.UseSqlite(
     builder.Configuration.GetConnectionString("DefaultConnection")
 ));
 builder.Services.AddAutoMapper(typeof(MappingProfiles));
+builder.Services.AddCors(option =>
+{
+    option.AddPolicy("CorsPolicy", policy =>
+    {
+        policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4200");
+    });
+});
 
 var app = builder.Build();
 using (var scope = app.Services.CreateScope())
@@ -44,6 +51,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStatusCodePagesWithReExecute("/errors/{0}");
 app.UseStaticFiles();
+app.UseCors("CorsPolicy");
 app.UseAuthorization();
 
 app.MapControllers();
