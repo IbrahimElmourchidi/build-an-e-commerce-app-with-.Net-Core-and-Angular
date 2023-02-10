@@ -1,0 +1,16 @@
+
+.logo{
+  max-height: 60px;
+}
+
+.cart-counter{
+  background: var(--bs-secondary);
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: -10px;
+  left: -10px;
+}
