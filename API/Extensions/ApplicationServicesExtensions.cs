@@ -6,6 +6,7 @@ using API.Errors;
 using Core.Interfaces;
 using Infrastructure.Data;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace API.Extensions;
 

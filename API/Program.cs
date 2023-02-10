@@ -3,6 +3,11 @@ using API.Middlewares;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using API.Extensions;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Hosting;
 
 var builder = WebApplication.CreateBuilder(args);
 
