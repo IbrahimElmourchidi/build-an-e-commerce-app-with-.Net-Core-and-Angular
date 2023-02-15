@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { ErrorResponse } from './shared/models/error-response.interface';
+import { IErrorResponse } from './shared/models/error-response.interface';
 import { IPagination } from './shared/models/pagination.interface';
 import { IProduct } from './shared/models/product.interface';
 

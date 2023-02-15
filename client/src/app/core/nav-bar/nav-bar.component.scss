@@ -1,9 +1,8 @@
-
-.logo{
+.logo {
   max-height: 60px;
 }
 
-.cart-counter{
+.cart-counter {
   background: var(--bs-secondary);
   height: 20px;
   width: 20px;
@@ -13,4 +12,11 @@
   justify-content: center;
   top: -10px;
   left: -10px;
+}
+
+
+.active {
+  font-weight: 600;
+  color: var(--bs-primary);
+  transition: color 0.3s ease;
 }

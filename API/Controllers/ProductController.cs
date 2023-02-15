@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
 using API.Dtos;
 using API.Helpers;
+using API.Errors;
 
 namespace API.Controllers;
 
@@ -61,10 +62,12 @@ public class ProductController : BaseApiController
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<Product>> GetSingleProduct(int id)
+    public async Task<ActionResult<ProductToReturn>> GetSingleProduct(int id)
     {
         var spec = new ProductsWithBrandAndTypeSpec(id);
         var product = await _productRepo.GetSingleWithSpec(spec);
-        return Ok(product);
+        if (product == null) return NotFound(new ApiErrorResponse(404));
+        var productToReturn = _mapper.Map<Product, ProductToReturn>(product);
+        return Ok(productToReturn);
     }
 }

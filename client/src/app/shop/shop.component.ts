@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { IBrand } from '../shared/models/brand.interface';
-import { ErrorResponse } from '../shared/models/error-response.interface';
+import { IErrorResponse } from '../shared/models/error-response.interface';
 import { IProductType } from '../shared/models/product-type.interface';
 import { IProduct } from '../shared/models/product.interface';
 import { ShopParams } from '../shared/models/shop-params';
@@ -72,7 +72,6 @@ export class ShopComponent implements OnInit {
   }
 
   onPageChange(pageNumber: number) {
-    console.log(pageNumber);
     this.shopParams.pageIndex = pageNumber;
     this.GetProducts();
   }
