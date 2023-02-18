@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IErrorResponse } from 'src/app/shared/models/error-response.interface';
 import { IProduct } from 'src/app/shared/models/product.interface';
+import { BreadcrumbService } from 'xng-breadcrumb';
 import { ShopService } from '../shop.service';
 
 @Component({
@@ -15,7 +16,8 @@ export class ProductDetailsComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private shopService: ShopService
+    private shopService: ShopService,
+    private bcService: BreadcrumbService
   ) {}
 
   ngOnInit(): void {
@@ -26,6 +28,7 @@ export class ProductDetailsComponent implements OnInit {
     this.shopService.GetSingleProduct(this.productId).subscribe({
       next: (prod: IProduct) => {
         this.product = prod;
+        this.bcService.set('@productDetails', prod.name);
       },
       error: (err: IErrorResponse) => console.log(err),
     });

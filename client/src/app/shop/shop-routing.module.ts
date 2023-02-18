@@ -12,6 +12,7 @@ let shopRoutes: Routes = [
   {
     path: ':id',
     component: ProductDetailsComponent,
+    data: { breadcrumb: { alias: 'productDetails' } },
   },
 ];
 

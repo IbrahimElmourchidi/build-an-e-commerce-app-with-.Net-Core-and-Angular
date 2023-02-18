@@ -11,29 +11,34 @@ const routes: Routes = [
   {
     path: '',
     component: HomeComponent,
+    data: { breadcrumb: 'Home' },
   },
   {
     path: 'error',
     component: TestErrorComponent,
+    data: { breadcrumb: 'Test Errors' },
   },
 
   {
     path: 'notfound',
     component: NotfoundComponent,
+    data: { breadcrumb: '404' },
   },
 
   {
     path: 'servererror',
     component: ServerErrorComponent,
+    data: { breadcrumb: 'Server Error' },
   },
 
   {
     path: 'shop',
     loadChildren: () => import('./shop/shop.module').then((m) => m.ShopModule),
+    data: { breadcrumb: 'shop' }
   },
   {
     path: '**',
-    redirectTo: '',
+    redirectTo: 'notfound',
     pathMatch: 'full',
   },
 ];

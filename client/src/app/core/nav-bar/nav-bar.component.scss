@@ -20,3 +20,11 @@
   color: var(--bs-primary);
   transition: color 0.3s ease;
 }
+
+.fixed-t {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  z-index: 100;
+}
