@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Hosting;
+using StackExchange.Redis;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +21,12 @@ builder.Services.AddSwaggerDocumentation();
 builder.Services.AddDbContext<StoreContext>(context => context.UseSqlite(
     builder.Configuration.GetConnectionString("DefaultConnection")
 ));
+builder.Services.AddSingleton<IConnectionMultiplexer>(c =>
+    {
+        var configuration = ConfigurationOptions.Parse(builder.Configuration.GetConnectionString("Redis"), true);
+        return ConnectionMultiplexer.Connect(configuration);
+    }
+);
 builder.Services.AddAutoMapper(typeof(MappingProfiles));
 builder.Services.AddCors(option =>
 {

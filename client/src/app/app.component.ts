@@ -1,9 +1,6 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { BasketService } from './basket/basket.service';
 import { BusyService } from './core/services/busy.service';
-import { IErrorResponse } from './shared/models/error-response.interface';
-import { IPagination } from './shared/models/pagination.interface';
-import { IProduct } from './shared/models/product.interface';
 
 @Component({
   selector: 'app-root',
@@ -13,7 +10,22 @@ import { IProduct } from './shared/models/product.interface';
 export class AppComponent implements OnInit {
   title = 'skinet';
 
-  constructor(private busyService: BusyService) {}
+  constructor(
+    private busyService: BusyService,
+    private basketService: BasketService
+  ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    let storedBasketId = localStorage.getItem('basketId');
+    if (storedBasketId) {
+      this.basketService.getBasket(storedBasketId).subscribe({
+        next: (res) => {
+          console.log('initialized basket');
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
+    }
+  }
 }
